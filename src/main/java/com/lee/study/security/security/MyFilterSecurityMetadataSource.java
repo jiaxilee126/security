@@ -3,7 +3,7 @@ package com.lee.study.security.security;
 import com.lee.study.security.dao.ResourceResposity;
 import com.lee.study.security.dao.RoleResourceResposity;
 import com.lee.study.security.dao.RoleResposity;
-import com.lee.study.security.entity.Resources;
+import com.lee.study.security.entity.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
@@ -11,11 +11,9 @@ import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.stereotype.Component;
-import org.springframework.util.AntPathMatcher;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -62,14 +60,14 @@ public class MyFilterSecurityMetadataSource implements FilterInvocationSecurityM
     根据路径查询所符合的ConfigAttribute
      */
     public Collection<ConfigAttribute> getMatcherConfigAttribute(String url) {
-        Resources resources = resourceResposity.findByUrl(url);
-        if(resources == null){
+        Resource resource = resourceResposity.findByUrl(url);
+        if(resource == null){
             System.out.println(url +"===================");
         }
         return roleResourceResposity.
-                findByResoucesid(resources.getId()).stream().
+                findByResourceId(resource.getId()).stream().
                 map( roles ->
-                        new SecurityConfig(roleResposity.findById(roles.getRoleid()).get().getName())).
+                        new SecurityConfig(roleResposity.findById(roles.getRoleId()).get().getName())).
                                 collect(Collectors.toList());
     }
 
@@ -79,7 +77,7 @@ public class MyFilterSecurityMetadataSource implements FilterInvocationSecurityM
      * @return
      */
     private List<String> allowedRequest() {
-        return Arrays.asList("/login","/","/*.ico","/dist/**","/bower_components/**","/images/**","/js/**","/page/**","/plugins/**","/ztree/**","/include/**");
+        return Arrays.asList("/login","/","/*.ico","/dist/**","/bower_components/**","/images/**","/js/**","/page/**","/plugins/**","/ztree/**","/include/**","/adminlte/**");
     }
 
     /**

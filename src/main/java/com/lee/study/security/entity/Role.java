@@ -22,7 +22,7 @@ public class Role {
     private String name;
     private String description;
     private Boolean available;
-    private Date createtime;
-    private Date updatetime;
+    private Date createTime;
+    private Date updateTime;
 
 }

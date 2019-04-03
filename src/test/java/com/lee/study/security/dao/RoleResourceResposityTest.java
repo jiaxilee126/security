@@ -11,7 +11,7 @@ public class RoleResourceResposityTest extends SecurityApplicationTests{
     private RoleResourceResposity roleResourceResposity;
     @Test
     public void findByResoucesid() throws Exception {
-        System.out.println(roleResourceResposity.findByResoucesid(4));
+        System.out.println(roleResourceResposity.findByResourceId(4));
     }
 
 }

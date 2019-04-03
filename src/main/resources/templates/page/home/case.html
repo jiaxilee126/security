@@ -1,0 +1,171 @@
+<!DOCTYPE html >
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="include/header :: header">
+
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+
+    <!-- 头部 -->
+    <header th:include="include/header :: admin-header" class="main-header"></header>
+    <!-- 左边 -->
+    <aside th:include="include/left :: admin-left" class="main-sidebar"></aside>
+
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                案例管理
+                <small>CASE</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                <li class="active">图表鉴赏</li>
+            </ol>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <h1>欢迎，管理员大人</h1>
+
+
+
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">案例列表</h3>
+                    <br><br>
+                    <button  class="btn btn-success btn-sm" id="addCase"><i class="fa fa-plus"></i> &nbsp;&nbsp;添加案例</button>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <table id="caseList" class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>案例名称</th>
+                            <th>案例图片</th>
+                            <th>状态</th>
+                            <th>创建时间</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!--th:if="${not #lists.isEmpty(productCase)}"-->
+                        <tr th:if="${not #lists.isEmpty(productCase)}" th:each="case,stat :${productCase}">
+                            <td th:text="${stat.count}">1</td>
+                            <td th:text="${case.name}">案例名称</td>
+                            <td th:text="${case.image}">案例图片</td>
+                            <!--<td>
+                                <div id="status-switch" class="switch  switch-small" data-on="primary" data-off="info">
+                                    <input type="checkbox" checked />
+                                </div>
+                            </td>-->
+                            <td th:if="${case.status}" >发布</td>
+                            <td th:unless="${case.status}">禁止</td>
+                            <td th:text="${case.updateTime}">创建时间</td>
+                            <td>
+                                <span class="btn btn-xs btn-danger"  ><i class="fa fa-trash-o"></i>删除 </span>
+                                <span class="btn btn-xs btn-info"  ><i class="fa fa-edit"></i>编辑</span>
+
+                            </td>
+                        </tr>
+                       <<tr  th:unless="${not #lists.isEmpty(productCase)}">
+                            <td colspan="7" align="center">
+                                <h2>目前没有数据</h2>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </section>
+    </div>
+
+    <footer th:replace="include/foot :: admin-footer"></footer>
+
+    <div class="control-sidebar-bg"></div>
+</div>
+<!-- ./wrapper -->
+
+<!-- 新增或修改的模态框 -->
+<div class="modal fade" id="userModal" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-hidden="true">&times;</button>
+                <h4 class="modal-title text-center" id="usermodelHead">添加用户</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal"  role="form">
+                    <input type="hidden" name="url" value=""/>
+                    <input type="hidden" name="user_id" value=""/>
+                    <input type="hidden" name="oldpath" value=""/>
+                    <div class="form-group" data-toggle="tooltip" title="如果不修改则不需要选择文件">
+                        <label for="imgfile" class="col-sm-2 control-label">上传头像</label>
+                        <div class="col-sm-10">
+                            <form id="imgForm" name="imgForm" enctype="multipart/form-data" method="post">
+                                <a href="javascript:void(0)"><input type="file" class="form-control file" name="file" value="" id="imgfile" placeholder="请选择文件"></a>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="imgfile" class="col-sm-2 control-label"></label>
+                        <div class="col-sm-10">
+                            <div><img src="" data-toggle="tooltip" title="当前头像或更新后的头像" id="showImg" style="width: 50px;"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="username" class="col-sm-2 control-label">用户名称</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="username" value="" id="username" placeholder="请输入用户名">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nick_name" class="col-sm-2 control-label">用户昵称</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="nick_name" value="" id="nick_name" placeholder="请输入昵称">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password" class="col-sm-2 control-label">用户密码</label>
+                        <div class="col-sm-10">
+                            <input type="password" class="form-control" name="password" value="" id="password" placeholder="请输入密码">
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+                <button type="submit" class="btn btn-success"  id="imgSubmit" >确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<script>
+    //初始化swithc
+    // 初始化 注意：state 属性的设置一定放在最后，别问我问什么，哈哈
+    $('#status-switch').bootstrapSwitch('onText','开启').bootstrapSwitch('offText','禁止').bootstrapSwitch("onColor",'success')
+        .bootstrapSwitch('state',true);
+    // 添加事件
+    $('#status-switch').bootstrapSwitch("onSwitchChange",function(event,state){
+
+    });
+
+    $("#addCase").click(function(){
+        //reloadModelData(_ctx+"/admin/user/add","添加用户","添加","","","","","","","add");
+        $("#userModal").modal("show");
+    });
+
+</script>
+</html>
+

@@ -67,7 +67,7 @@ public class MyWebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new SavedRequestAwareAuthenticationSuccessHandler() {
             @Override
             public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-                //User userDetails = (User) authentication.getPrincipal();
+                //Admin userDetails = (Admin) authentication.getPrincipal();
                 User usr = (User) authentication.getPrincipal();
                 logger.info("USER : "+usr.getUsername() +"==" + " LOGIN SUCCESS !  ");
                 // response.setStatus(0);

@@ -116,21 +116,21 @@ div.cbp label.font{
 	                </tr>
                 </thead>
                 <tbody>
-                <tr th:if="${QX.query == '1'}" th:each="user,stat :${users}">
+                <tr th:if="${QX.query == '1'}" th:each="admin,stat :${users}">
                   <td th:text="${stat.count}">1</td>
-                  <td th:text="${user.userId}">用户ID</td>
-                  <td><img style="border-radius: 15px;height: 30px;width: 30px" th:src="${user.picPath}" src="/images/logo.png"></img></td>
-                  <td th:text="${user.username}">用户名称</td>
-                  <td th:text="${user.nickName}">用户昵称</td>
-                  <td th:text="${user.createTime}">创建时间</td>
+                  <td th:text="${admin.userId}">用户ID</td>
+                  <td><img style="border-radius: 15px;height: 30px;width: 30px" th:src="${admin.picPath}" src="/images/logo.png"></img></td>
+                  <td th:text="${admin.username}">用户名称</td>
+                  <td th:text="${admin.nickName}">用户昵称</td>
+                  <td th:text="${admin.createTime}">创建时间</td>
                   <td>
-                  	<div th:if="${user.userId != 1 || meid == '1'}">
-	                  	<span data-toggle="tooltip" title="给用户分配角色" th:if="${QX.edit == '1'}" class="btn btn-xs btn-primary" th:data-id="${user.userId}" th:onclick="allotRole(this.getAttribute('data-id'));"><i class="fa fa-user-md"></i> 分配角色</span>
-	                  	<span data-toggle="tooltip" title="编辑用户信息" th:if="${QX.edit == '1'}" class="btn btn-xs btn-info" th:data-id="${user.userId}"  th:data-username="${user.username}" th:data-nickName="${user.nickName}" th:data-picPath="${user.picPath}" th:onclick="editUser(this.getAttribute('data-id'),this.getAttribute('data-username'),this.getAttribute('data-nickName'),this.getAttribute('data-picPath'));"><i class="fa fa-edit"></i> </span>
-	                  	<span data-toggle="tooltip" title="删除用户" th:if="${QX.del == '1'}" class="btn btn-xs btn-danger" th:data-id="${user.userId}" th:data-picPath="${user.picPath}"  th:onclick="delUser(this.getAttribute('data-id'),this.getAttribute('data-picPath'));"><i class="fa fa-trash-o"></i> </span>
+                  	<div th:if="${admin.userId != 1 || meid == '1'}">
+	                  	<span data-toggle="tooltip" title="给用户分配角色" th:if="${QX.edit == '1'}" class="btn btn-xs btn-primary" th:data-id="${admin.userId}" th:onclick="allotRole(this.getAttribute('data-id'));"><i class="fa fa-admin-md"></i> 分配角色</span>
+	                  	<span data-toggle="tooltip" title="编辑用户信息" th:if="${QX.edit == '1'}" class="btn btn-xs btn-info" th:data-id="${admin.userId}"  th:data-username="${admin.username}" th:data-nickName="${admin.nickName}" th:data-picPath="${admin.picPath}" th:onclick="editUser(this.getAttribute('data-id'),this.getAttribute('data-username'),this.getAttribute('data-nickName'),this.getAttribute('data-picPath'));"><i class="fa fa-edit"></i> </span>
+	                  	<span data-toggle="tooltip" title="删除用户" th:if="${QX.del == '1'}" class="btn btn-xs btn-danger" th:data-id="${admin.userId}" th:data-picPath="${admin.picPath}"  th:onclick="delUser(this.getAttribute('data-id'),this.getAttribute('data-picPath'));"><i class="fa fa-trash-o"></i> </span>
 	                  	<span data-toggle="tooltip" title="权限不够" th:unless="${QX.edit == '1' || QX.add == '1' || QX.del == '1'}" ><i class="fa fa-lock"></i> </span>
                   	</div>
-                  	<div th:if="${user.userId == 1 && meid != '1'}">
+                  	<div th:if="${admin.userId == 1 && meid != '1'}">
 	                  	<span><i class="fa fa-lock"></i></span>
                   	</div>
                   </td>
@@ -259,7 +259,7 @@ $(function(){
     });
 	
 	$("#addUser").click(function(){
-		reloadModelData(_ctx+"/admin/user/add","添加用户","添加","","","","","","","add");
+		reloadModelData(_ctx+"/admin/admin/add","添加用户","添加","","","","","","","add");
 		$("#userModal").modal("show");
 	});
 	
@@ -272,7 +272,7 @@ $(function(){
 		var nickName= $("input[name='nick_name']").val();
 		var password= $("input[name='password']").val();
 		var picPath= $("#showImg").attr("src");
-		if(url == _ctx+'/admin/user/add'){
+		if(url == _ctx+'/admin/admin/add'){
 			if(!checkAccount(username,nickName,password)){
 				return false;
 			}
@@ -303,7 +303,7 @@ $(function(){
 		var userId = $("input[name='role_user_id']").val();
 		$.ajax({
 			type:"POST",
-			url:_ctx+"/admin/user/editRole",
+			url:_ctx+"/admin/admin/editRole",
 			cache:false,
 			dataType:"json",
 			data:{userId:userId,ids:ids,time:new Date().getTime()},
@@ -348,7 +348,7 @@ function delUser(userId,path){
 	if(confirm("你确定要删除此用户吗？")){
 		$.ajax({
 			type:"POST",
-			url:_ctx+"/admin/user/del",
+			url:_ctx+"/admin/admin/del",
 			dataType:"json",
 			data:{userId:userId,picPath:path},
 			cache:false,
@@ -368,7 +368,7 @@ function allotRole(userId){
 	$(".modal-body .cbp p").remove();
 	$.ajax({
 		type:"GET",
-		url:_ctx+"/admin/user/getRole",
+		url:_ctx+"/admin/admin/getRole",
 		dataType:"json",
 		data:{userId:userId,time:new Date().getTime()},
 		cache:false,
@@ -403,7 +403,7 @@ function allotRole(userId){
 //编辑用户
 function editUser(user_id,username,nickName,path){
 	console.log(user_id+","+username+","+nickName+","+path);
-	reloadModelData(_ctx+"/admin/user/edit","编辑用户","更新",user_id,"",path,username,nickName,"","edit");
+	reloadModelData(_ctx+"/admin/admin/edit","编辑用户","更新",user_id,"",path,username,nickName,"","edit");
 	$("#userModal").modal("show");
 }
 

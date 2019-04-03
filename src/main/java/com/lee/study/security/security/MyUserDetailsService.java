@@ -1,12 +1,12 @@
 package com.lee.study.security.security;
 
 
+import com.lee.study.security.dao.AdminResposity;
 import com.lee.study.security.dao.RoleResposity;
-import com.lee.study.security.dao.UserResposity;
-import com.lee.study.security.dao.UserroleResposity;
+import com.lee.study.security.dao.AdminRoleResposity;
+import com.lee.study.security.entity.Admin;
+import com.lee.study.security.entity.AdminRole;
 import com.lee.study.security.entity.Role;
-import com.lee.study.security.entity.User;
-import com.lee.study.security.entity.Userrole;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -32,10 +32,10 @@ import java.util.Set;
 @Service
 public class MyUserDetailsService implements UserDetailsService {
     @Autowired
-    private UserResposity userResposity;
+    private AdminResposity adminResposity;
 
     @Autowired
-    private UserroleResposity userroleResposity;
+    private AdminRoleResposity adminRoleResposity;
 
     @Autowired
     private RoleResposity roleResposity;
@@ -48,19 +48,19 @@ public class MyUserDetailsService implements UserDetailsService {
         }
 
         //数据库查出来用户
-        User user = userResposity.findByName(username);
+        Admin admin = adminResposity.findByName(username);
         //权限赋值
         Set<GrantedAuthority> authorities = new HashSet<>();
 
-        List<Userrole> userroles = userroleResposity.findByUserid(user.getId());
+        List<AdminRole> adminRoles = adminRoleResposity.findByAdminId(admin.getId());
 
-        userroles.forEach( e -> {
-            Optional optional = roleResposity.findById(e.getRoleid());
+        adminRoles.forEach(e -> {
+            Optional optional = roleResposity.findById(e.getRoleId());
             Role role = (Role) optional.get();
             authorities.add(new SimpleGrantedAuthority(role.getName()));
         });
 
 
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
+        return new org.springframework.security.core.userdetails.User(admin.getUsername(), admin.getPassword(), authorities);
     }
 }

@@ -15,11 +15,11 @@ The following guides illustrate how to use some features concretely:
 
 This project is major builded with Springboot/Security/JPA/Mysql and Theamleaf.
 
-The database only has five table:user/resources/role/userrole/roleresource.
+The database only has five table:admin/resource/role/userrole/roleresource.
 
 And The Resource is consist of button and url.
 
-One user has some roles, One role has some resources.
+One admin has some roles, One role has some resource.
 
 ### Starter
 

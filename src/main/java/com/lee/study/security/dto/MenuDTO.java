@@ -1,8 +1,7 @@
 package com.lee.study.security.dto;
 
-import com.lee.study.security.entity.Resources;
+import com.lee.study.security.entity.Resource;
 import lombok.Data;
-import org.springframework.beans.BeanUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -18,7 +17,7 @@ public class MenuDTO {
     private String name;
     private String type;
     private String url;
-    private Integer parentid;
+    private Integer parentId;
     private Integer sort;
     private String icon;
     private Date createtime;
@@ -26,15 +25,15 @@ public class MenuDTO {
 
     private List<MenuDTO> subMenu;
 
-    public MenuDTO(Resources resources){
-        this.name = resources.getName();
-        this.type = resources.getType();
-        this.url = resources.getUrl();
-        this.parentid = resources.getParentid();
-        this.sort = resources.getSort();
-        this.icon = resources.getIcon();
-        this.createtime = resources.getCreatetime();
-        this.updatetime = resources.getUpdatetime();
+    public MenuDTO(Resource resource){
+        this.name = resource.getName();
+        this.type = resource.getType();
+        this.url = resource.getUrl();
+        this.parentId = resource.getParentId();
+        this.sort = resource.getSorted();
+        this.icon = resource.getIcon();
+        this.createtime = resource.getCreateTime();
+        this.updatetime = resource.getUpdateTime();
     }
 
 }

@@ -2,17 +2,14 @@ package com.lee.study.security.service.impl;
 
 import com.lee.study.security.dao.ResourceResposity;
 import com.lee.study.security.dto.MenuDTO;
-import com.lee.study.security.entity.Resources;
+import com.lee.study.security.entity.Resource;
 import com.lee.study.security.enums.ResourceEnum;
 import com.lee.study.security.service.IMenuService;
-import lombok.val;
-import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @ClassName MenuService
@@ -27,7 +24,7 @@ public class MenuService implements IMenuService{
 
     @Override
     public List<MenuDTO> getPageMenu() {
-        List<Resources> resources = resourceResposity.findByType(ResourceEnum.URL.getKey());
+        List<Resource> resources = resourceResposity.findByType(ResourceEnum.URL.getKey());
         return getMenuDTO4Res(resources);
     }
 
@@ -36,12 +33,12 @@ public class MenuService implements IMenuService{
      * @param res
      * @return
      */
-    public List<MenuDTO> getMenuDTO4Res(List<Resources> res) {
+    public List<MenuDTO> getMenuDTO4Res(List<Resource> res) {
         List<MenuDTO> dtos = new ArrayList<>();
-        for (Resources resource: res
+        for (Resource resource: res
              ) {
             //挑出根菜单
-            if(resource.getParentid() == 0){
+            if(resource.getParentId() == 0){
                 MenuDTO dto = new MenuDTO(resource);
                 dto.setSubMenu(getMenuDTO4ResId(resource.getId()));
                 dtos.add(dto);
@@ -58,8 +55,8 @@ public class MenuService implements IMenuService{
      */
     public List<MenuDTO> getMenuDTO4ResId(Integer resourceid) {
         List<MenuDTO> dtos = new ArrayList<>();
-        List<Resources> res = resourceResposity.getSubResouces(resourceid);
-        for (Resources r : res){
+        List<Resource> res = resourceResposity.getSubResouces(resourceid);
+        for (Resource r : res){
             if(resourceResposity.getSubResouces(r.getId()).size() == 0){
                 dtos.add(new MenuDTO(r));
             }else {
